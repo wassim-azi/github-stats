@@ -123,10 +123,16 @@ const fetchTopLanguages = async (
       // get the size of the language (bytes)
       let langSize = prev.size;
 
+      // Remap YAML to CI/CD
+      let langName = prev.node.name;
+      if (langName === "YAML") {
+        langName = "CI/CD";
+      }
+
       // if we already have the language in the accumulator
       // & the current language name is same as previous name
       // add the size to the language size and increase repoCount.
-      if (acc[prev.node.name] && prev.node.name === acc[prev.node.name].name) {
+      if (acc[langName] && langName === acc[langName].name) {
         langSize = prev.size + acc[prev.node.name].size;
         repoCount += 1;
       } else {
@@ -136,7 +142,7 @@ const fetchTopLanguages = async (
       }
       return {
         ...acc,
-        [prev.node.name]: {
+        [langName]: {
           name: prev.node.name,
           color: prev.node.color,
           size: langSize,
